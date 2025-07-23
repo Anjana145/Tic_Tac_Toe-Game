@@ -3,12 +3,15 @@ let currentPlayer = 'X';
 let gameActive = true;
 let gameMode = 'friend';
 let scores = { x: 0, o: 0, draw: 0 };
+let musicPlaying = false;
 
 // DOM Elements
 const welcomeScreen = document.getElementById('welcome-screen');
 const playerSelection = document.getElementById('player-selection');
 const gameScreen = document.getElementById('game-screen');
 const winMessage = document.getElementById('win-message');
+const musicBtn = document.getElementById('music-btn');
+const backgroundMusic = document.getElementById('background-music');
 
 const startGameBtn = document.getElementById('start-game-btn');
 const vsFriendBtn = document.getElementById('vs-friend');
@@ -29,6 +32,24 @@ const gameModeDisplay = document.getElementById('game-mode');
 const scoreX = document.getElementById('score-x');
 const scoreO = document.getElementById('score-o');
 const scoreDraw = document.getElementById('score-draw');
+
+// Music Control
+musicBtn.addEventListener('click', toggleMusic);
+
+function toggleMusic() {
+    if (musicPlaying) {
+        backgroundMusic.pause();
+        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+        musicBtn.classList.remove('bg-red-500');
+        musicBtn.classList.add('bg-gradient-to-r', 'from-pink-500', 'to-teal-500');
+    } else {
+        backgroundMusic.play().catch(e => console.log("Autoplay prevented, user interaction required"));
+        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        musicBtn.classList.remove('bg-gradient-to-r', 'from-pink-500', 'to-teal-500');
+        musicBtn.classList.add('bg-red-500');
+    }
+    musicPlaying = !musicPlaying;
+}
 
 // Event Listeners
 startGameBtn.addEventListener('click', () => showScreen('selection'));
@@ -90,7 +111,7 @@ function handleCellClick(event) {
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         
         if (gameMode === 'computer' && currentPlayer === 'O' && gameActive) {
-            setTimeout(makeComputerMove, 500);
+            setTimeout(makeComputerMove, 600);
         } else {
             updateStatus();
         }
@@ -102,6 +123,13 @@ function makeMove(cellIndex, player) {
     const cell = cells[cellIndex];
     cell.textContent = player;
     cell.classList.add(player === 'X' ? 'text-blue-500' : 'text-red-500');
+    cell.classList.add('scale-110');
+    
+    // Add fun animation
+    cell.style.animation = 'bounce 0.3s';
+    setTimeout(() => {
+        cell.style.animation = '';
+    }, 300);
 }
 
 function makeComputerMove() {
@@ -139,9 +167,9 @@ function checkWin() {
     for (let pattern of winPatterns) {
         const [a, b, c] = pattern;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            // Highlight winning cells
+            // Highlight winning cells with fun animation
             pattern.forEach(index => {
-                cells[index].classList.add('bg-green-100');
+                cells[index].classList.add('bg-yellow-200', 'border-yellow-500', 'animate-pulse');
             });
             return true;
         }
@@ -190,7 +218,7 @@ function updateStatus(message) {
         statusDisplay.textContent = message;
     } else {
         if (gameMode === 'computer' && currentPlayer === 'O') {
-            statusDisplay.textContent = "Computer's Turn";
+            statusDisplay.textContent = "🤖 Computer's Turn 🤖";
         } else {
             statusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
         }
@@ -210,7 +238,7 @@ function resetGame() {
     
     cells.forEach(cell => {
         cell.textContent = '';
-        cell.className = 'aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell';
+        cell.className = 'w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform';
     });
     
     updateStatus();

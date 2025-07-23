@@ -3,131 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe - Cartoon Fun</title>
+    <title>Kids Tic Tac Toe - Super Fun!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            75% { transform: rotate(-3deg); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .animate-bounce-slow { animation: bounce 2s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin 4s linear infinite; }
+        .animate-wiggle { animation: wiggle 1s ease-in-out infinite; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        
+        /* Background decorations */
+        .background-element {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        
+        /* Music button */
+        #music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        #music-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-white flex items-center justify-center p-4">
+<body class="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-yellow-200 flex items-center justify-center p-2">
+    <!-- Music Button -->
+    <button id="music-btn" class="animate-pulse">
+        <i class="fas fa-music"></i>
+    </button>
+    
+    <!-- Audio Element -->
+    <audio id="background-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Background Decorations -->
+    <div class="background-element top-5 left-5 text-3xl animate-bounce-slow">⭐</div>
+    <div class="background-element top-10 right-10 text-2xl animate-spin-slow">⭕</div>
+    <div class="background-element bottom-20 left-8 text-3xl animate-wiggle">❌</div>
+    <div class="background-element bottom-16 right-16 text-xl animate-float">🎮</div>
+    <div class="background-element top-16 left-1/3 text-2xl animate-bounce-slow">🎉</div>
+    <div class="background-element top-2/3 right-1/4 text-3xl animate-spin-slow">🎯</div>
+
     <!-- Welcome Screen -->
-    <div id="welcome-screen" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center border-4 border-red-400">
-        <div class="mb-6">
-            <div class="text-7xl mb-4">⭕❌</div>
-        </div>
+    <div id="welcome-screen" class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-4 text-center border-4 border-pink-400 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-pink-100 via-purple-100 to-yellow-100 opacity-30"></div>
         
-        <h1 class="text-4xl font-bold text-gray-800 mb-3">Tic Tac Toe</h1>
-        <p class="text-gray-600 mb-2 text-lg">Cartoon Fun Edition!</p>
-        <div class="w-16 h-1 bg-red-400 mx-auto rounded-full mb-8"></div>
-        
-        <button id="start-game-btn" class="w-full bg-red-400 text-white py-4 px-6 rounded-2xl font-bold text-lg mb-6">
-            Start Game
-        </button>
-        
-        <div class="text-sm text-gray-500">
-            Play against friends or computer
+        <div class="relative z-10">
+            <div class="mb-3 animate-bounce-slow">
+                <div class="text-4xl mb-3 flex justify-center gap-2">
+                    <span class="animate-spin-slow">⭕</span>
+                    <span class="animate-wiggle">❌</span>
+                </div>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500 mb-2">
+                Tic Tac Toe
+            </h1>
+            <p class="text-purple-600 mb-2 text-sm font-bold">Super Fun Kids Edition!</p>
+            <div class="w-16 h-1 bg-gradient-to-r from-pink-400 to-purple-400 mx-auto rounded-full mb-4"></div>
+            
+            <button id="start-game-btn" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-4 rounded-2xl font-bold text-base shadow-lg hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 mb-4 border-2 border-white">
+                🚀 Start Game! 🚀
+            </button>
+            
+            <div class="text-xs text-purple-700 font-bold flex items-center justify-center gap-1">
+                <i class="fas fa-star text-yellow-400 animate-pulse"></i>
+                Play with friends or computer!
+                <i class="fas fa-star text-yellow-400 animate-pulse"></i>
+            </div>
         </div>
     </div>
 
     <!-- Player Selection Screen -->
-    <div id="player-selection" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center border-4 border-green-400 hidden">
-        <div class="mb-4">
-            <div class="text-5xl">🎮</div>
-        </div>
+    <div id="player-selection" class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-4 text-center border-4 border-green-400 relative overflow-hidden hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-100 via-blue-100 to-purple-100 opacity-30"></div>
         
-        <h2 class="text-3xl font-bold text-gray-800 mb-6">Choose Opponent</h2>
-        
-        <div class="space-y-4 mb-8">
-            <button id="vs-friend" class="w-full bg-green-400 text-white py-4 px-6 rounded-2xl font-semibold">
-                <i class="fas fa-users mr-2"></i>
-                Play vs Friend
-            </button>
+        <div class="relative z-10">
+            <div class="animate-bounce mb-3">
+                <div class="text-3xl">🎮</div>
+            </div>
             
-            <button id="vs-computer" class="w-full bg-purple-400 text-white py-4 px-6 rounded-2xl font-semibold">
-                <i class="fas fa-robot mr-2"></i>
-                Play vs Computer
+            <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 mb-4">
+                Choose Your Friend!
+            </h2>
+            
+            <div class="space-y-3 mb-4">
+                <button id="vs-friend" class="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white py-3 px-3 rounded-2xl font-bold text-sm shadow-lg hover:from-green-500 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2 border-2 border-white">
+                    <i class="fas fa-users text-sm"></i>
+                    👫 Play vs Friend 👫
+                </button>
+                
+                <button id="vs-computer" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-3 rounded-2xl font-bold text-sm shadow-lg hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2 border-2 border-white">
+                    <i class="fas fa-robot text-sm"></i>
+                    🤖 Play vs Computer 🤖
+                </button>
+            </div>
+            
+            <button id="back-to-welcome" class="text-purple-600 hover:text-purple-800 font-bold text-xs flex items-center justify-center gap-1 mx-auto bg-white px-3 py-1 rounded-xl shadow hover:bg-purple-50 border border-purple-200">
+                <i class="fas fa-arrow-left"></i>Back to Menu
             </button>
         </div>
-        
-        <button id="back-to-welcome" class="text-gray-600 hover:text-gray-800 font-medium">
-            <i class="fas fa-arrow-left mr-2"></i>Back to Menu
-        </button>
     </div>
 
     <!-- Game Screen -->
-    <div id="game-screen" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-blue-400 hidden">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
-            <button id="back-to-selection" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100">
-                <i class="fas fa-arrow-left text-xl"></i>
-            </button>
-            <h1 class="text-2xl font-bold text-gray-800">Tic Tac Toe</h1>
-            <div class="w-10 h-10 flex items-center justify-center">
-                <div class="text-2xl">🎯</div>
-            </div>
-        </div>
-
-        <!-- Game Mode Indicator -->
-        <div id="game-mode" class="text-center text-sm font-medium text-gray-700 mb-4 bg-gray-100 py-2 px-4 rounded-full">
-            Playing vs Friend
-        </div>
-
-        <!-- Game Info -->
-        <div class="mb-6">
-            <div id="status" class="text-center text-lg font-semibold text-gray-800 mb-4 py-3 px-4 bg-gray-100 rounded-2xl">
-                Player X's Turn
-            </div>
-
-            <!-- Score Board -->
-            <div class="grid grid-cols-3 gap-3 mb-4">
-                <div class="bg-blue-100 rounded-2xl p-3 text-center">
-                    <div class="text-sm text-blue-700 font-bold">Player X</div>
-                    <div id="score-x" class="text-2xl font-bold text-blue-800">0</div>
-                </div>
-                <div class="bg-yellow-100 rounded-2xl p-3 text-center">
-                    <div class="text-sm text-yellow-700 font-bold">Draws</div>
-                    <div id="score-draw" class="text-2xl font-bold text-yellow-800">0</div>
-                </div>
-                <div class="bg-red-100 rounded-2xl p-3 text-center">
-                    <div class="text-sm text-red-700 font-bold">Player O</div>
-                    <div id="score-o" class="text-2xl font-bold text-red-800">0</div>
+    <div id="game-screen" class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-3 border-4 border-blue-400 relative overflow-hidden hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-100 via-pink-100 to-blue-100 opacity-30"></div>
+        
+        <div class="relative z-10">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-3">
+                <button id="back-to-selection" class="text-purple-600 hover:text-purple-800 p-1 rounded-full hover:bg-purple-100 bg-white shadow border border-purple-200">
+                    <i class="fas fa-arrow-left text-sm"></i>
+                </button>
+                <h1 class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-pink-500">Tic Tac Toe</h1>
+                <div class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow border border-yellow-200">
+                    <div class="text-sm animate-spin">🎯</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Game Board -->
-        <div class="grid grid-cols-3 gap-3 mb-6" id="board">
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="0"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="1"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="2"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="3"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="4"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="5"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="6"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="7"></div>
-            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="8"></div>
-        </div>
+            <!-- Game Mode Indicator -->
+            <div id="game-mode" class="text-center text-xs font-bold text-purple-700 mb-2 bg-gradient-to-r from-yellow-50 to-pink-50 py-1 px-3 rounded-xl border border-dashed border-purple-300">
+                Playing vs Friend
+            </div>
 
-        <!-- Game Controls -->
-        <div class="flex flex-col sm:flex-row gap-3 mb-4">
-            <button id="reset-btn" class="flex-1 bg-red-400 text-white py-3 px-6 rounded-2xl font-semibold">
-                Reset Game
-            </button>
-            <button id="new-game-btn" class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-2xl font-semibold">
-                New Game
-            </button>
+            <!-- Game Info -->
+            <div class="mb-3">
+                <div id="status" class="text-center text-sm font-bold text-purple-800 mb-2 py-2 px-3 bg-gradient-to-r from-yellow-50 to-pink-50 rounded-xl border border-purple-300 shadow">
+                    Player X's Turn
+                </div>
+
+                <!-- Score Board -->
+                <div class="grid grid-cols-3 gap-1 mb-3">
+                    <div class="bg-gradient-to-br from-blue-200 to-blue-300 rounded-xl p-2 text-center shadow border border-white">
+                        <div class="text-xs text-blue-800 font-bold">Player X</div>
+                        <div id="score-x" class="text-lg font-bold text-blue-900">0</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-xl p-2 text-center shadow border border-white">
+                        <div class="text-xs text-yellow-800 font-bold">Draws</div>
+                        <div id="score-draw" class="text-lg font-bold text-yellow-900">0</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-red-200 to-red-300 rounded-xl p-2 text-center shadow border border-white">
+                        <div class="text-xs text-red-800 font-bold">Player O</div>
+                        <div id="score-o" class="text-lg font-bold text-red-900">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Board - Much smaller -->
+            <div class="grid grid-cols-3 gap-1 mb-3" id="board">
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="0"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="1"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="2"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="3"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="4"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="5"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="6"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="7"></div>
+                <div class="w-16 h-16 bg-white border-2 border-purple-400 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-pink-50 transition-all duration-200 shadow cell hover:scale-105 transform" data-cell-index="8"></div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="flex flex-col gap-2">
+                <button id="reset-btn" class="w-full bg-gradient-to-r from-red-400 to-orange-500 text-white py-2 px-3 rounded-xl font-bold text-sm shadow-lg hover:from-red-500 hover:to-orange-600 transform hover:scale-105 transition-all duration-200 border border-white">
+                    🔄 Reset Game
+                </button>
+                <button id="new-game-btn" class="w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-3 rounded-xl font-bold text-sm shadow-lg hover:from-gray-600 hover:to-gray-700 transform hover:scale-105 transition-all duration-200 border border-white">
+                    ✨ New Game
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Win Message Modal -->
     <div id="win-message" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl border-4 border-yellow-400">
-            <div class="text-7xl mb-4" id="win-icon">🎉</div>
-            <h2 id="win-text" class="text-2xl font-bold text-gray-800 mb-6"></h2>
-            <button id="play-again-btn" class="w-full bg-red-400 text-white py-3 px-6 rounded-2xl font-semibold mb-3">
-                Play Again
-            </button>
-            <button id="change-mode-btn" class="w-full bg-gray-200 text-gray-700 py-2 px-6 rounded-xl font-medium">
-                Change Mode
-            </button>
+        <div class="bg-white rounded-2xl p-4 text-center max-w-xs w-full shadow-xl border-4 border-yellow-400">
+            <div class="text-4xl mb-3 animate-spin-slow" id="win-icon">🎉</div>
+            <h2 id="win-text" class="text-lg font-bold text-purple-800 mb-4"></h2>
+            <div class="space-y-2">
+                <button id="play-again-btn" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-4 rounded-xl font-bold text-sm shadow-lg hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 border-2 border-white">
+                    🎮 Play Again! 🎮
+                </button>
+                <button id="change-mode-btn" class="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-white py-1 px-3 rounded-lg font-bold text-xs shadow hover:from-yellow-500 hover:to-orange-500 transform hover:scale-105 transition-all duration-200 border border-white">
+                    🔁 Change Mode
+                </button>
+            </div>
         </div>
     </div>
 
