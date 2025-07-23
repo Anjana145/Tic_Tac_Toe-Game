@@ -3,160 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>Tic Tac Toe - Cartoon Fun</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-            <!-- Game Title -->
-            <h1 class="text-3xl font-bold text-center mb-6">Tic-Tac-Toe</h1>
+<body class="min-h-screen bg-white flex items-center justify-center p-4">
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center border-4 border-red-400">
+        <div class="mb-6">
+            <div class="text-7xl mb-4">⭕❌</div>
+        </div>
+        
+        <h1 class="text-4xl font-bold text-gray-800 mb-3">Tic Tac Toe</h1>
+        <p class="text-gray-600 mb-2 text-lg">Cartoon Fun Edition!</p>
+        <div class="w-16 h-1 bg-red-400 mx-auto rounded-full mb-8"></div>
+        
+        <button id="start-game-btn" class="w-full bg-red-400 text-white py-4 px-6 rounded-2xl font-bold text-lg mb-6">
+            Start Game
+        </button>
+        
+        <div class="text-sm text-gray-500">
+            Play against friends or computer
+        </div>
+    </div>
+
+    <!-- Player Selection Screen -->
+    <div id="player-selection" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center border-4 border-green-400 hidden">
+        <div class="mb-4">
+            <div class="text-5xl">🎮</div>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Choose Opponent</h2>
+        
+        <div class="space-y-4 mb-8">
+            <button id="vs-friend" class="w-full bg-green-400 text-white py-4 px-6 rounded-2xl font-semibold">
+                <i class="fas fa-users mr-2"></i>
+                Play vs Friend
+            </button>
             
-            <!-- Game Status -->
-            <div id="status" class="text-xl text-center mb-4 h-8">
-                Player X's turn
-            </div>
+            <button id="vs-computer" class="w-full bg-purple-400 text-white py-4 px-6 rounded-2xl font-semibold">
+                <i class="fas fa-robot mr-2"></i>
+                Play vs Computer
+            </button>
+        </div>
+        
+        <button id="back-to-welcome" class="text-gray-600 hover:text-gray-800 font-medium">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Menu
+        </button>
+    </div>
 
-            <div class="mb-4">
-                <label for="gameMode" class="block text-center font-semibold mb-2">Game Mode</label>
-                <select id="gameMode" class="w-full border-gray-300 rounded-md">
-                    <option value="pvp">Player vs Player</option>
-                    <option value="pve">Player vs AI</option>
-                </select>
+    <!-- Game Screen -->
+    <div id="game-screen" class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-blue-400 hidden">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <button id="back-to-selection" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Tic Tac Toe</h1>
+            <div class="w-10 h-10 flex items-center justify-center">
+                <div class="text-2xl">🎯</div>
             </div>
+        </div>
 
-            <!-- Game Board -->
-            <div id="board" class="grid grid-cols-3 gap-2 mb-6">
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
-                <button class="cell h-24 text-4xl font-bold bg-gray-50 rounded-lg hover:bg-gray-100"></button>
+        <!-- Game Mode Indicator -->
+        <div id="game-mode" class="text-center text-sm font-medium text-gray-700 mb-4 bg-gray-100 py-2 px-4 rounded-full">
+            Playing vs Friend
+        </div>
+
+        <!-- Game Info -->
+        <div class="mb-6">
+            <div id="status" class="text-center text-lg font-semibold text-gray-800 mb-4 py-3 px-4 bg-gray-100 rounded-2xl">
+                Player X's Turn
             </div>
 
             <!-- Score Board -->
-            <div class="flex justify-between mb-6 px-4">
-                <div class="text-center">
-                    <div class="text-lg font-semibold">Player X</div>
-                    <div id="scoreX" class="text-2xl">0</div>
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="bg-blue-100 rounded-2xl p-3 text-center">
+                    <div class="text-sm text-blue-700 font-bold">Player X</div>
+                    <div id="score-x" class="text-2xl font-bold text-blue-800">0</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-lg font-semibold">Draws</div>
-                    <div id="scoreDraw" class="text-2xl">0</div>
+                <div class="bg-yellow-100 rounded-2xl p-3 text-center">
+                    <div class="text-sm text-yellow-700 font-bold">Draws</div>
+                    <div id="score-draw" class="text-2xl font-bold text-yellow-800">0</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-lg font-semibold">Player O</div>
-                    <div id="scoreO" class="text-2xl">0</div>
+                <div class="bg-red-100 rounded-2xl p-3 text-center">
+                    <div class="text-sm text-red-700 font-bold">Player O</div>
+                    <div id="score-o" class="text-2xl font-bold text-red-800">0</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Reset Button -->
-            <button 
-                id="resetBtn"
-                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
-            >
+        <!-- Game Board -->
+        <div class="grid grid-cols-3 gap-3 mb-6" id="board">
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="0"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="1"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="2"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="3"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="4"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="5"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="6"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="7"></div>
+            <div class="aspect-square bg-white border-3 border-gray-300 rounded-2xl flex items-center justify-center text-3xl md:text-4xl font-bold cursor-pointer hover:bg-gray-50 cell" data-cell-index="8"></div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+            <button id="reset-btn" class="flex-1 bg-red-400 text-white py-3 px-6 rounded-2xl font-semibold">
+                Reset Game
+            </button>
+            <button id="new-game-btn" class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-2xl font-semibold">
                 New Game
             </button>
         </div>
     </div>
 
-    <script>
-        class TicTacToe {
-            constructor() {
-                this.board = Array(9).fill('');
-                this.currentPlayer = 'X';
-                this.gameActive = true;
-                this.scores = { X: 0, O: 0, draw: 0 };
-                this.winPatterns = [
-                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                    [0, 4, 8], [2, 4, 6]             // Diagonals
-                ];
-                this.initializeGame();
-            }
+    <!-- Win Message Modal -->
+    <div id="win-message" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl border-4 border-yellow-400">
+            <div class="text-7xl mb-4" id="win-icon">🎉</div>
+            <h2 id="win-text" class="text-2xl font-bold text-gray-800 mb-6"></h2>
+            <button id="play-again-btn" class="w-full bg-red-400 text-white py-3 px-6 rounded-2xl font-semibold mb-3">
+                Play Again
+            </button>
+            <button id="change-mode-btn" class="w-full bg-gray-200 text-gray-700 py-2 px-6 rounded-xl font-medium">
+                Change Mode
+            </button>
+        </div>
+    </div>
 
-            initializeGame() {
-                this.cells = document.querySelectorAll('.cell');
-                this.statusDisplay = document.getElementById('status');
-                this.resetButton = document.getElementById('resetBtn');
-
-                this.cells.forEach((cell, index) => {
-                    cell.addEventListener('click', () => this.handleCellClick(index));
-                });
-
-                this.resetButton.addEventListener('click', () => this.resetGame());
-                this.updateStatus();
-            }
-
-            handleCellClick(index) {
-                if (this.board[index] === '' && this.gameActive) {
-                    this.board[index] = this.currentPlayer;
-                    this.cells[index].textContent = this.currentPlayer;
-                    this.cells[index].classList.add(
-                        this.currentPlayer === 'X' ? 'text-blue-500' : 'text-red-500'
-                    );
-
-                    if (this.checkWin()) {
-                        this.handleWin();
-                    } else if (this.checkDraw()) {
-                        this.handleDraw();
-                    } else {
-                        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
-                        this.updateStatus();
-                    }
-                }
-            }
-
-            checkWin() {
-                return this.winPatterns.some(pattern => {
-                    const values = pattern.map(index => this.board[index]);
-                    return values.every(value => value === this.currentPlayer);
-                });
-            }
-
-            checkDraw() {
-                return !this.board.includes('');
-            }
-
-            handleWin() {
-                this.gameActive = false;
-                this.scores[this.currentPlayer]++;
-                document.getElementById(`score${this.currentPlayer}`).textContent = 
-                    this.scores[this.currentPlayer];
-                this.statusDisplay.textContent = `Player ${this.currentPlayer} wins!`;
-            }
-
-            handleDraw() {
-                this.gameActive = false;
-                this.scores.draw++;
-                document.getElementById('scoreDraw').textContent = this.scores.draw;
-                this.statusDisplay.textContent = "It's a draw!";
-            }
-
-            updateStatus() {
-                this.statusDisplay.textContent = `Player ${this.currentPlayer}'s turn`;
-            }
-
-            resetGame() {
-                this.board = Array(9).fill('');
-                this.currentPlayer = 'X';
-                this.gameActive = true;
-                this.cells.forEach(cell => {
-                    cell.textContent = '';
-                    cell.classList.remove('text-blue-500', 'text-red-500');
-                });
-                this.updateStatus();
-            }
-        }
-
-        // Initialize the game
-        document.addEventListener('DOMContentLoaded', () => {
-            new TicTacToe();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
